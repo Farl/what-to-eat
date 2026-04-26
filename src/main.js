@@ -165,11 +165,11 @@ async function activateBackend(backend) {
 
 async function loadBackendModules(backend) {
     if (backend === 'overpass') {
-        mapManager = await import('./map-leaflet.js');
-        apiModule  = await import('./api-overpass.js');
+        mapManager = await import('./map/leaflet.js');
+        apiModule  = await import('./api/overpass.js');
     } else {
-        mapManager = await import('./map-google.js');
-        apiModule  = await import('./api-google.js');
+        mapManager = await import('./map/google.js');
+        apiModule  = await import('./api/google.js');
     }
 }
 

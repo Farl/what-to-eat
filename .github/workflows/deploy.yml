@@ -32,7 +32,7 @@ jobs:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
         run: |
           if [ -n "$GOOGLE_MAPS_API_KEY" ]; then
-            sed -i "s|__GOOGLE_MAPS_API_KEY__|${GOOGLE_MAPS_API_KEY}|g" main.js
+            sed -i "s|__GOOGLE_MAPS_API_KEY__|${GOOGLE_MAPS_API_KEY}|g" src/main.js
             echo "API key injected."
           else
             echo "No GOOGLE_MAPS_API_KEY secret set. Users will enter their own key."

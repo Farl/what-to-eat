@@ -1,4 +1,4 @@
-import { OVERPASS_API_URL } from './constants.js';
+import { OVERPASS_API_URL } from '../constants.js';
 // Overpass (OpenStreetMap) backend – no API key required
 
 export async function fetchRestaurantsFromAPI(lat, lon, radiusKm) { 

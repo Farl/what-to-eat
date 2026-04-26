@@ -1,0 +1,157 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What to eat?</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    <link rel="stylesheet" href="styles.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "confetti-js": "https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.module.mjs",
+                "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js"
+            }
+        }
+    </script>
+    <style>
+        .cuisine-filter-container {
+            margin-top: 15px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+        .cuisine-filter-container h3 {
+            margin-bottom: 15px;
+            color: #e74c3c;
+            font-size: 1.4rem;
+        }
+        .cuisine-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .cuisine-checkboxes label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            border: 1px solid #e0e0e0;
+        }
+        .cuisine-checkboxes label:hover {
+            background-color: #e9ecef;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .cuisine-checkboxes label input {
+            margin-right: 5px;
+        }
+        
+        .google-api-promo {
+            background-color: #4285F4;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        
+        .google-api-promo a {
+            color: white;
+            text-decoration: underline;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        
+        .google-api-promo a:hover {
+            text-decoration: none;
+        }
+        
+        .container {
+            margin-top: 50px; /* Adjust for fixed top bar */
+        }
+    </style>
+</head>
+<body>
+    <div class="google-api-promo">
+        Check out our Google API version! 
+        <a href="https://websim.com/@uncle_farl/what-to-eat-google" target="_blank" rel="noopener noreferrer">View Google Version</a>
+    </div>
+    <div class="container">
+        <h1>What to eat?</h1>
+        
+        <div class="location-controls">
+            <div class="range-section">
+                <label for="distance-number-input">Maximum Distance (km): <span id="distance-value">1.0</span></label>
+                <div class="distance-input-container">
+                    <input type="number" id="distance-number-input" min="0.1" max="4.0" step="0.1" value="1.0">
+                    <input type="range" id="distance-range-slider" min="0.1" max="4.0" step="0.1" value="1.0">
+                </div>
+            </div>
+            
+            <div class="location-action-group">
+                <button id="detect-location">Detect My Location</button>
+                <button id="find-restaurants" class="primary-btn">Find Restaurants</button>
+            </div>
+
+            <div id="wheel-container" class="hidden">
+                <h2>Spin to Decide!</h2>
+                <div class="wheel-wrapper">
+                    <canvas id="wheel" width="300" height="300"></canvas>
+                    <div id="css-wheel-pointer"></div>
+                </div>
+                <!-- New slider for spin duration -->
+                <div class="spin-duration-section">
+                    <label for="spin-duration-range">Spin Duration (seconds): <span id="spin-duration-value">5</span></label>
+                    <input type="range" id="spin-duration-range" min="0" max="3" step="0.1" value="2.0">
+                </div>
+                <!-- Spin button removed, click the wheel instead -->
+                <!-- <button id="spin-button" class="primary-btn">Spin the Wheel</button> -->
+            </div>
+        </div>
+        
+        <div class="cuisine-filter-container hidden" id="cuisine-filter-container">
+            <h3>Filter Cuisines</h3>
+            <div class="cuisine-checkboxes" id="cuisine-checkboxes">
+                <!-- Cuisine checkboxes will be dynamically added here -->
+            </div>
+        </div>
+        
+        <div class="bottom-section">
+            <div class="location-section">
+                <h2>Set Location</h2>
+                <div id="map"></div>
+                <p>Adjust marker on map or use detection.</p>
+            </div>
+            
+            <div id="results-section" class="hidden">
+                <h2>Restaurants Found: <span id="restaurant-count">0</span></h2>
+                <div id="restaurant-list"></div>
+            </div>
+        </div>
+        
+        <div id="result-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Your Restaurant Is...</h2>
+                <div id="chosen-restaurant"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="main.js" type="module"></script>
+</body>
+</html>
