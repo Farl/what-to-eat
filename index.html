@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What to Eat?</title>
+    <!-- Leaflet CSS (used by OpenStreetMap backend) -->
+    <link id="leaflet-css" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin="" disabled>
+    <link rel="stylesheet" href="styles.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "confetti-js": "https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.module.mjs",
+                "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js"
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <!-- ── Backend Selector ─────────────────────────────────── -->
+    <div class="backend-bar">
+        <span class="backend-label">Data source:</span>
+        <div class="backend-toggle">
+            <button id="btn-overpass" class="backend-btn active" data-backend="overpass">
+                🗺️ OpenStreetMap <span class="badge free">Free</span>
+            </button>
+            <button id="btn-google" class="backend-btn" data-backend="google">
+                🌐 Google Maps
+            </button>
+        </div>
+    </div>
+
+    <!-- ── Google API Key Setup (shown only when Google backend is selected) ── -->
+    <div id="google-api-section" class="api-key-section hidden">
+        <div class="api-key-card">
+            <h3>Google Maps API Key</h3>
+            <p id="api-key-hint">
+                Enter your Google Maps API key (needs <strong>Maps JavaScript API</strong> and
+                <strong>Places API</strong> enabled).
+                <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener noreferrer">
+                    Get a key ↗
+                </a>
+            </p>
+            <div class="api-key-input-row">
+                <input type="password" id="google-api-key" placeholder="AIza…" autocomplete="off" spellcheck="false">
+                <button id="initialize-app-btn" class="primary-btn">Use this key</button>
+            </div>
+            <p id="api-key-status" class="api-key-status hidden"></p>
+        </div>
+    </div>
+
+    <!-- ── Main App Content ──────────────────────────────────── -->
+    <div id="app-content" class="container hidden">
+        <h1>What to eat?</h1>
+
+        <div class="location-controls">
+            <div class="range-section">
+                <label for="distance-number-input">
+                    Maximum Distance (km): <span id="distance-value">1.0</span>
+                </label>
+                <div class="distance-input-container">
+                    <input type="number" id="distance-number-input" min="0.1" max="4.0" step="0.1" value="1.0">
+                    <input type="range"  id="distance-range-slider" min="0.1" max="4.0" step="0.1" value="1.0">
+                </div>
+            </div>
+
+            <div class="location-action-group">
+                <button id="detect-location">Detect My Location</button>
+                <button id="find-restaurants" class="primary-btn">Find Restaurants</button>
+            </div>
+
+            <div id="wheel-container" class="hidden">
+                <h2>Spin to Decide!</h2>
+                <div class="wheel-wrapper">
+                    <canvas id="wheel" width="300" height="300"></canvas>
+                    <div id="css-wheel-pointer"></div>
+                </div>
+                <div class="spin-duration-section">
+                    <label for="spin-duration-range">
+                        Spin Duration (seconds): <span id="spin-duration-value">5</span>
+                    </label>
+                    <input type="range" id="spin-duration-range" min="0" max="3" step="0.1" value="2.0">
+                </div>
+            </div>
+        </div>
+
+        <div class="cuisine-filter-container hidden" id="cuisine-filter-container">
+            <h3>Filter Cuisines</h3>
+            <div class="cuisine-checkboxes" id="cuisine-checkboxes"></div>
+        </div>
+
+        <div class="bottom-section">
+            <div class="location-section">
+                <h2>Set Location</h2>
+                <div id="map"></div>
+                <p>Drag the marker or use location detection.</p>
+            </div>
+
+            <div id="results-section" class="hidden">
+                <h2>Restaurants Found: <span id="restaurant-count">0</span></h2>
+                <div id="restaurant-list"></div>
+            </div>
+        </div>
+
+        <div id="result-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Your Restaurant Is…</h2>
+                <div id="chosen-restaurant"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js" type="module"></script>
+</body>
+</html>
